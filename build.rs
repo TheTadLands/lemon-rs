@@ -17,15 +17,13 @@ fn main() -> Result<()> {
 
     // compile rlemon:
     {
-        assert!(Build::new()
-            .target(&env::var("HOST").unwrap())
-            .get_compiler()
-            .to_command()
+        // Use system compiler directly to avoid cross-compilation issues
+        assert!(Command::new("clang")
             .arg("-o")
-            .arg(rlemon.clone())
-            .arg(rlemon_src)
+            .arg(&rlemon)
+            .arg(&rlemon_src)
             .status()?
-            .success());
+        .success());
     }
 
     let sql_parser = "src/parser/parse.y";
